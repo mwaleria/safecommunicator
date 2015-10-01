@@ -5,16 +5,22 @@
  */
 package pl.mwaleria.safecommunicator.client.gui;
 
+import pl.mwaleria.safecommunicator.client.ClientManager;
+
 /**
  *
  * @author waler
  */
 public class LoginFrame extends javax.swing.JFrame {
 
+    private final ClientManager clientManager;
+    
     /**
      * Creates new form LoginFrame
+     * @param clientManager
      */
-    public LoginFrame() {
+    public LoginFrame(ClientManager clientManager) {
+        this.clientManager = clientManager;
         initComponents();
     }
 
@@ -126,27 +132,11 @@ public class LoginFrame extends javax.swing.JFrame {
         if(!isContentValid()) {
             return;
         }
+        clientManager.connectToServer(textServerHost.getText(), testServerPort.getText(), testUserName.getText(), textRandom.getText());
         System.out.println("s");
     }//GEN-LAST:event_buttonLoginActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonLogin;

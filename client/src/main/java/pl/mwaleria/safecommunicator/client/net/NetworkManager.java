@@ -1,5 +1,6 @@
 package pl.mwaleria.safecommunicator.client.net;
 
+import pl.mwaleria.safecommunicator.core.net.OutputStreamHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package pl.mwaleria.safecommunicator.client.net;
+package pl.mwaleria.safecommunicator.core.net;
 
 import java.io.IOException;
 import java.io.OutputStream;
