@@ -13,4 +13,16 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>pl.mwaleria.safecommunicator</groupId>
+            <artifactId>core</artifactId>  
+            <version>${project.version}</version>          
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>        
+    </dependencies>
 </project>
