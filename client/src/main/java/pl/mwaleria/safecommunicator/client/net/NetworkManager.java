@@ -18,7 +18,7 @@ import pl.mwaleria.safecommunicator.core.utils.CommunicationUtils;
  */
 public class NetworkManager {
 
-    private OutputStreamHandler outputStreamHandler;
+    private OutputStreamHandler<ServerRequest> outputStreamHandler;
     private Socket socket;
 
     public boolean connect(String address, int port) {

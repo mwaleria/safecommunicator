@@ -2,6 +2,7 @@ package pl.mwaleria.safecommunicator.core.net;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.security.PublicKey;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -15,11 +16,11 @@ import pl.mwaleria.safecommunicator.core.utils.CommunicationUtils;
  *
  * @author mwaleria
  */
-public class OutputStreamHandler implements Runnable{
+public class OutputStreamHandler<T extends Serializable> implements Runnable{
     
     private final OutputStream outputStream;
     
-    private final ConcurrentLinkedQueue<ServerRequest> queue;
+    private final ConcurrentLinkedQueue<T> queue;
     
     private final PublicKey consumerPublicKey;
     
@@ -35,7 +36,7 @@ public class OutputStreamHandler implements Runnable{
     @Override
     public void run() {
         while(true) {
-            ServerRequest request = queue.poll();
+            T request = queue.poll();
             if(request != null) {
                 try {
                     byte[] obj = cipherManager.encrypt(SerializationUtils.serialize(request),consumerPublicKey);
@@ -48,7 +49,7 @@ public class OutputStreamHandler implements Runnable{
         }
     }
     
-    public void addTask(ServerRequest req) {
+    public void addTask(T req) {
         queue.offer(req);
     }
 
