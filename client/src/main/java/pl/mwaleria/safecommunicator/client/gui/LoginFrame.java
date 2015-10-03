@@ -133,7 +133,7 @@ public class LoginFrame extends javax.swing.JFrame {
             return;
         }
         clientManager.connectToServer(textServerHost.getText(), testServerPort.getText(), testUserName.getText(), textRandom.getText());
-        System.out.println("s");
+        
     }//GEN-LAST:event_buttonLoginActionPerformed
 
 

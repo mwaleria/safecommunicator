@@ -25,7 +25,7 @@ public class NetworkManager {
         try {
             socket = new Socket(address, port);
             this.handleConnectedSocket(socket);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(NetworkManager.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }

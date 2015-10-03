@@ -16,9 +16,9 @@ public class SafeCommunicatorKeyGenerator {
 
     public KeyPair generateKeyPair(String base) {
         try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(Constants.CIPHER_ALGORITHM);
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(Constants.CIPHER_ASYMETRIC_ALGORITHM);
             SecureRandom safeRandom = new SecureRandom(this.generateSeed(base));
-            keyPairGenerator.initialize(Constants.CIPHER_SIZE, safeRandom);
+            keyPairGenerator.initialize(Constants.CIPHER_ASYMETRIC_SIZE, safeRandom);
             return keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SafeCommunicatorKeyGenerator.class.getName()).log(Level.SEVERE, null, ex);
