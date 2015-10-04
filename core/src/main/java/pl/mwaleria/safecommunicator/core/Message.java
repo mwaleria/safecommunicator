@@ -1,8 +1,9 @@
 package pl.mwaleria.safecommunicator.core;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+
 import java.util.Arrays;
+import org.joda.time.LocalDateTime;
 
 /**
  *
