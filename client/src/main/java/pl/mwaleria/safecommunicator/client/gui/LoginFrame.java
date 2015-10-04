@@ -6,6 +6,7 @@
 package pl.mwaleria.safecommunicator.client.gui;
 
 import pl.mwaleria.safecommunicator.client.ClientManager;
+import pl.mwaleria.safecommunicator.client.ConnectResponse;
 
 /**
  *
@@ -132,7 +133,11 @@ public class LoginFrame extends javax.swing.JFrame {
         if(!isContentValid()) {
             return;
         }
-        clientManager.connectToServer(textServerHost.getText(), testServerPort.getText(), testUserName.getText(), textRandom.getText());
+        ConnectResponse resp = clientManager.connectToServer(textServerHost.getText(), testServerPort.getText(), testUserName.getText(), textRandom.getText());
+        if(resp == ConnectResponse.SUCCESS) {
+            this.setVisible(false);
+            new CommunicatorForm(clientManager).setVisible(true);
+        }
         
     }//GEN-LAST:event_buttonLoginActionPerformed
 

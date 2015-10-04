@@ -7,6 +7,22 @@
         <Property name="text" type="java.lang.String" value="jMenuItem1"/>
       </Properties>
     </Component>
+    <Container class="javax.swing.JPopupMenu" name="popupMenu">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="menuStartConversation">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="New Conversation"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuStartConversationActionPerformed"/>
+          </Events>
+        </MenuItem>
+      </SubComponents>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="manuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="menuFile">
@@ -74,7 +90,7 @@
                           <Component id="labelUserList" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                      <Component id="tabbedPanel" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -98,7 +114,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                      <Component id="tabbedPanel" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -122,7 +138,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JList" name="jList1">
+        <Component class="javax.swing.JList" name="listUsers">
           <Properties>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="0"/>
@@ -136,7 +152,7 @@
         <Property name="text" type="java.lang.String" value="User List"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+    <Container class="javax.swing.JTabbedPane" name="tabbedPanel">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>

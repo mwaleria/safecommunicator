@@ -33,11 +33,24 @@ public class ClientEventDispatcher extends EventDispatcher<ServerRequest, Server
 			return fromServerNewUser(t);
 		case USER_LEFT:
 			return fromServerUSerLeft(t);
+		case YOUR_USER_ID:
+			return fromServerMyUserId(t);
 		default:
 			break;
 
 		}
 		return null;
+	}
+
+	private SafeCommunicatorRunnable<ServerRequest, ServerResponse> fromServerMyUserId(ServerResponse t) {
+		return new SafeCommunicatorRunnable<ServerRequest, ServerResponse>(t, clientManager.getOutputStreamHandler()) {
+			@Override
+			protected ServerRequest doTask(ServerResponse request) {
+				Long userId = (Long) request.getValue();
+				clientManager.updateUserId(userId);
+				return null;
+			}
+		};
 	}
 
 	private SafeCommunicatorRunnable<ServerRequest, ServerResponse> fromServerUSerLeft(ServerResponse t) {

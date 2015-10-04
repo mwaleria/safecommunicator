@@ -37,7 +37,7 @@ public class ServerManager {
 
 	private ServerSocket serverSocket;
 
-	private AtomicLong userCounter = new AtomicLong(12L);
+	private final  AtomicLong userCounter = new AtomicLong(12L);
 
 	private EventDispatcher<ServerResponse, ServerRequest> dispatcher;
 

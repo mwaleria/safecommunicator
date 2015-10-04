@@ -5,18 +5,32 @@
  */
 package pl.mwaleria.safecommunicator.client.gui;
 
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import pl.mwaleria.safecommunicator.client.msg.ChatThread;
+
 /**
  *
  * @author waler
  */
 public class ChatPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ChatPanel
-     */
-    public ChatPanel() {
+    public ChatPanel(CommunicatorForm communicatorForm, ChatThread chatTread) {
+        this.communicatorForm = communicatorForm;
+        this.chatTread = chatTread;
         initComponents();
+        Action action = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage();
+            }
+        };
+        textMessage.addActionListener(action);
     }
+
+    private final CommunicatorForm communicatorForm;
+    private final ChatThread chatTread;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,6 +55,11 @@ public class ChatPanel extends javax.swing.JPanel {
         labelUsersInConversation.setText("label2");
 
         jButton1.setText("SEND");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         textChat.setEditable(false);
         textChat.setColumns(20);
@@ -98,6 +117,15 @@ public class ChatPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.sendMessage();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void sendMessage() {
+        communicatorForm.sendMessage(textMessage.getText(), chatTread);
+        textMessage.setText("");
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
