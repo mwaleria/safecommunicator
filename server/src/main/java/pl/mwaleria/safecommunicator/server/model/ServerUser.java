@@ -3,7 +3,9 @@ package pl.mwaleria.safecommunicator.server.model;
 
 import java.security.PublicKey;
 import java.util.Objects;
+
 import org.joda.time.LocalDateTime;
+
 import pl.mwaleria.safecommunicator.core.User;
 
 /**
@@ -12,71 +14,74 @@ import pl.mwaleria.safecommunicator.core.User;
  */
 public class ServerUser {
 
-    private User user;
-    
-    private String host;
-    
-    private LocalDateTime joinTime;
-    
-    public ServerUser( Long userId, String host, LocalDateTime joinTime) {
-        user = new User();
-        user.setId(userId);
-        this.host = host;
-        this.joinTime = joinTime;
-    }
+	private User user;
 
-    public PublicKey getPublicKey() {
-        return user.getPublicKey();
-    }
+	private String host;
 
-    public void setPublicKey(PublicKey publicKey) {
-        user.setPublicKey(publicKey);
-    }
+	private LocalDateTime joinTime;
 
-    public String getUserName() {
-        return user.getUserName();
-    }
+	public ServerUser(Long userId, String host, LocalDateTime joinTime) {
+		user = new User();
+		user.setId(userId);
+		this.host = host;
+		this.joinTime = joinTime;
+	}
 
-    public void setUserName(String userName) {
-        user.setUserName(userName);
-    }
+	public PublicKey getPublicKey() {
+		return user.getPublicKey();
+	}
 
-    public Long getId() {
-        return user.getId();
-    }
+	public void setPublicKey(PublicKey publicKey) {
+		user.setPublicKey(publicKey);
+	}
 
-    public void setId(Long id) {
-        user.setId(id);
-    }
+	public String getUserName() {
+		return user.getUserName();
+	}
 
-    @Override
-    public int hashCode() {
-        if(user != null) {
-            return user.getId().intValue();
-        }
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.host);
-        hash = 37 * hash + Objects.hashCode(this.joinTime);
-        
-        return hash;
-        
-    }
+	public void setUserName(String userName) {
+		user.setUserName(userName);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ServerUser other = (ServerUser) obj;
-        
-        if(this.user != null && other.user != null) {
-            return Objects.equals(this.user.getId(), other.user.getId());
-        }
-        return false;
-    }
-    
-    
+	public Long getId() {
+		return user.getId();
+	}
+
+	public void setId(Long id) {
+		user.setId(id);
+	}
+
+	@Override
+	public int hashCode() {
+		if (user != null) {
+			return user.getId().intValue();
+		}
+		int hash = 7;
+		hash = 37 * hash + Objects.hashCode(this.host);
+		hash = 37 * hash + Objects.hashCode(this.joinTime);
+
+		return hash;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ServerUser other = (ServerUser) obj;
+
+		if (this.user != null && other.user != null) {
+			return Objects.equals(this.user.getId(), other.user.getId());
+		}
+		return false;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
 }

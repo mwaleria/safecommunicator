@@ -3,7 +3,6 @@ package pl.mwaleria.safecommunicator.core;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  *
@@ -11,93 +10,85 @@ import java.util.Objects;
  */
 public class Message implements Serializable {
 
-    private Long userFrom;
+	private static final long serialVersionUID = 1L;
 
-    private Long usersTo;
+	private Long usersTo;
 
-    private String content;
+	private Long userFrom;
 
-    private LocalDateTime time;
+	private LocalDateTime time;
 
-    private Long[] usersInConversation;
+	private byte[] encryptedMessage;
 
-    public Long getUserFrom() {
-        return userFrom;
-    }
+	public Long getUsersTo() {
+		return usersTo;
+	}
 
-    public void setUserFrom(Long userFrom) {
-        this.userFrom = userFrom;
-    }
+	public void setUsersTo(Long usersTo) {
+		this.usersTo = usersTo;
+	}
 
-    public Long getUsersTo() {
-        return usersTo;
-    }
+	public LocalDateTime getTime() {
+		return time;
+	}
 
-    public void setUsersTo(Long usersTo) {
-        this.usersTo = usersTo;
+	public void setTime(LocalDateTime time) {
+		this.time = time;
+	}
 
-    }
+	public byte[] getEncryptedMessage() {
+		return encryptedMessage;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setEncryptedMessage(byte[] encryptedMessage) {
+		this.encryptedMessage = encryptedMessage;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public Long getUserFrom() {
+		return userFrom;
+	}
 
-    public LocalDateTime getTime() {
-        return time;
-    }
+	public void setUserFrom(Long userFrom) {
+		this.userFrom = userFrom;
+	}
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(encryptedMessage);
+		result = prime * result + ((time == null) ? 0 : time.hashCode());
+		result = prime * result + ((userFrom == null) ? 0 : userFrom.hashCode());
+		result = prime * result + ((usersTo == null) ? 0 : usersTo.hashCode());
+		return result;
+	}
 
-    public Long[] getUsersInConversation() {
-        return usersInConversation;
-    }
-
-    public void setUsersInConversation(Long[] usersInConversation) {
-        this.usersInConversation = usersInConversation;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + Objects.hashCode(this.userFrom);
-        hash = 71 * hash + Objects.hashCode(this.usersTo);
-        hash = 71 * hash + Objects.hashCode(this.content);
-        hash = 71 * hash + Objects.hashCode(this.time);
-        hash = 71 * hash + Arrays.deepHashCode(this.usersInConversation);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Message other = (Message) obj;
-        if (!Objects.equals(this.userFrom, other.userFrom)) {
-            return false;
-        }
-        if (!Objects.equals(this.usersTo, other.usersTo)) {
-            return false;
-        }
-        if (!Objects.equals(this.content, other.content)) {
-            return false;
-        }
-        if (!Objects.equals(this.time, other.time)) {
-            return false;
-        }
-        if (!Arrays.deepEquals(this.usersInConversation, other.usersInConversation)) {
-            return false;
-        }
-        return true;
-    }
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Message other = (Message) obj;
+		if (!Arrays.equals(encryptedMessage, other.encryptedMessage))
+			return false;
+		if (time == null) {
+			if (other.time != null)
+				return false;
+		} else if (!time.equals(other.time))
+			return false;
+		if (userFrom == null) {
+			if (other.userFrom != null)
+				return false;
+		} else if (!userFrom.equals(other.userFrom))
+			return false;
+		if (usersTo == null) {
+			if (other.usersTo != null)
+				return false;
+		} else if (!usersTo.equals(other.usersTo))
+			return false;
+		return true;
+	}
 }
