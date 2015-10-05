@@ -1,5 +1,7 @@
 package pl.mwaleria.safecommunicator.client.net;
 
+import java.util.Iterator;
+
 import pl.mwaleria.safecommunicator.client.ClientManager;
 import pl.mwaleria.safecommunicator.core.Message;
 import pl.mwaleria.safecommunicator.core.ServerRequest;
@@ -57,8 +59,8 @@ public class ClientEventDispatcher extends EventDispatcher<ServerRequest, Server
 		return new SafeCommunicatorRunnable<ServerRequest, ServerResponse>(t, clientManager.getOutputStreamHandler()) {
 			@Override
 			protected ServerRequest doTask(ServerResponse request) {
-				UserList userList = (UserList) request.getValue();
-				clientManager.updateUserList(userList);
+				User user = (User) request.getValue();
+				clientManager.deleteUser(user);
 				return null;
 			}
 		};
@@ -90,8 +92,15 @@ public class ClientEventDispatcher extends EventDispatcher<ServerRequest, Server
 		return new SafeCommunicatorRunnable<ServerRequest, ServerResponse>(t, clientManager.getOutputStreamHandler()) {
 			@Override
 			protected ServerRequest doTask(ServerResponse request) {
-				User user = (User) request.getValue();
-				clientManager.deleteUser(user);
+				UserList userList = (UserList) request.getValue();
+				Iterator<User> it = userList.getUsers().iterator();
+				while (it.hasNext()) {
+					if (it.next().getId() == clientManager.getCurrentUserId()) {
+						it.remove();
+						break;
+					}
+				}
+				clientManager.updateUserList(userList);
 				return null;
 			}
 		};

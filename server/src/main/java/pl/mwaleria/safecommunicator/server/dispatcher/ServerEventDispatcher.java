@@ -1,12 +1,13 @@
 package pl.mwaleria.safecommunicator.server.dispatcher;
 
+import java.util.logging.Logger;
+
 import org.joda.time.LocalDateTime;
 
 import pl.mwaleria.safecommunicator.core.Message;
 import pl.mwaleria.safecommunicator.core.ServerRequest;
 import pl.mwaleria.safecommunicator.core.ServerResponse;
 import pl.mwaleria.safecommunicator.core.ServerResponseType;
-import pl.mwaleria.safecommunicator.core.User;
 import pl.mwaleria.safecommunicator.core.net.EventDispatcher;
 import pl.mwaleria.safecommunicator.core.net.OutputStreamHandler;
 import pl.mwaleria.safecommunicator.core.net.SafeCommunicatorRunnable;
@@ -39,21 +40,8 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 
 	private SafeCommunicatorRunnable<ServerResponse, ServerRequest> register(ServerRequest t, final Long senderId,
 			OutputStreamHandler<ServerResponse> outputStreamHandler) {
-		SafeCommunicatorRunnable<ServerResponse, ServerRequest> output = new SafeCommunicatorRunnable<ServerResponse, ServerRequest>(
-				t, outputStreamHandler) {
-			@Override
-			protected ServerResponse doTask(ServerRequest request) {
-				User user = (User) request.getValue();
-				replaceInvalidUserName(user);
-				user.setId(senderId);
-				serverManager.registerUser(user);
-				ServerResponse serverResponse = new ServerResponse();
-				serverResponse.setResponseType(ServerResponseType.YOUR_USER_ID);
-				serverResponse.setValue(senderId);
-				return serverResponse;
-			}
-
-		};
+		SafeCommunicatorRunnable<ServerResponse, ServerRequest> output = new RegisterSafeCommunicatorRunnable(t,
+				serverManager, senderId);
 		return output;
 	}
 
@@ -63,13 +51,13 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 				t, outputStreamHandler) {
 			@Override
 			protected ServerResponse doTask(ServerRequest request) {
-				ServerResponse response = new ServerResponse();
-				Message message = (Message) response.getValue();
+				
+				Message message = (Message) request.getValue();
 				message.setUserFrom(senderId);
 				LocalDateTime dt = new org.joda.time.LocalDateTime();
 				message.setTime(new LocalDateTime());
 				serverManager.sendMessage(message);
-				return response;
+				return null;
 			}
 		};
 		return output;
@@ -85,21 +73,11 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 				response.setResponseType(ServerResponseType.ALL_USERS);
 				UserList userList = new UserList(serverManager.getAllUsers());
 				response.setValue(userList);
+				Logger.getLogger(this.getClass().getName()).info("GET ALL USER FOR");
 				return response;
 			}
 		};
 		return output;
-	}
-
-	/**
-	 * :-)
-	 * 
-	 * @param user
-	 */
-	private void replaceInvalidUserName(User user) {
-		if (user.getUserName().toUpperCase().contains("DAMIAN")) {
-			user.setUserName("DANIEL");
-		}
 	}
 
 }

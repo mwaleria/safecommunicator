@@ -2,12 +2,14 @@ package pl.mwaleria.safecommunicator.client;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.SerializationUtils;
 
+import pl.mwaleria.safecommunicator.client.gui.CommunicatorForm;
 import pl.mwaleria.safecommunicator.client.net.ClientEventDispatcher;
 import pl.mwaleria.safecommunicator.client.net.NetworkManager;
 import pl.mwaleria.safecommunicator.core.EncryptedMessage;
@@ -32,7 +34,9 @@ public class ClientManager {
 	private KeyPair myKeyPair;
 	private Long currentUserId;
 
-	private Map<Long, User> users;
+	private CommunicatorForm communicatorForm;
+
+	private Map<Long, User> users = new HashMap<>();
 
 	public ClientManager() {
 		ClientEventDispatcher dispatcher = new ClientEventDispatcher(this);
@@ -60,6 +64,9 @@ public class ClientManager {
 		req.setValue(user);
 		networkManager.openInputStreamAndSetKeys(myKeyPair);
 		networkManager.sendServerRequest(req);
+		ServerRequest getAllUser = new ServerRequest();
+		getAllUser.setRequestType(ServerRequestType.GET_ALL_USERS);
+		networkManager.sendServerRequest(getAllUser);
 	}
 
 	public OutputStreamHandler<ServerRequest> getOutputStreamHandler() {
@@ -67,25 +74,29 @@ public class ClientManager {
 	}
 
 	public void updateUserList(UserList userList) {
-		users.clear();
-		for (User user : userList.getUsers()) {
-			users.put(user.getId(), user);
+		if (userList != null) {
+			users.clear();
+			for (User user : userList.getUsers()) {
+				users.put(user.getId(), user);
+			}
+			communicatorForm.addAllUsers(userList.getUsers());
 		}
+
 	}
 
 	public void addNewUser(User user) {
-		// TODO Auto-generated method stub
+		users.put(user.getId(), user);
+		communicatorForm.addUser(user);
 
 	}
 
 	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
-
+		users.remove(user.getId());
+		communicatorForm.removeUser(user);
 	}
 
 	public void handleNewMessage(Message m) {
-		// TODO Auto-generated method stub
-
+		communicatorForm.handleNewMessage(m);
 	}
 
 	public void sendMessage(String content, Long... recipients) {
@@ -124,6 +135,11 @@ public class ClientManager {
 
 	public Long getCurrentUserId() {
 		return currentUserId;
+	}
+
+	public void openCommunicationForm() {
+		communicatorForm = new CommunicatorForm(this);
+		communicatorForm.setVisible(true);
 	}
 
 }
