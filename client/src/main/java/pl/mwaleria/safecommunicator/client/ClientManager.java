@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.SerializationUtils;
 
 import pl.mwaleria.safecommunicator.client.gui.CommunicatorForm;
+import pl.mwaleria.safecommunicator.client.msg.DecryptedMessage;
 import pl.mwaleria.safecommunicator.client.net.ClientEventDispatcher;
 import pl.mwaleria.safecommunicator.client.net.NetworkManager;
 import pl.mwaleria.safecommunicator.core.EncryptedMessage;
@@ -96,7 +97,8 @@ public class ClientManager {
 	}
 
 	public void handleNewMessage(Message m) {
-		communicatorForm.handleNewMessage(m);
+		communicatorForm.handleNewMessage(this.decryptMessage(m));
+		System.out.println("Handle new msg from" + m.getUserFrom());
 	}
 
 	public void sendMessage(String content, Long... recipients) {
@@ -115,6 +117,7 @@ public class ClientManager {
 						Message m = new Message();
 						m.setEncryptedMessage(encryptedSecretMessage);
 						m.setUsersTo(id);
+						req.setValue(m);
 						networkManager.sendServerRequest(req);
 					} catch (CryptoException ex) {
 						Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,6 +143,21 @@ public class ClientManager {
 	public void openCommunicationForm() {
 		communicatorForm = new CommunicatorForm(this);
 		communicatorForm.setVisible(true);
+	}
+
+	private DecryptedMessage decryptMessage(Message message) {
+		DecryptedMessage result = new DecryptedMessage();
+		try {
+			EncryptedMessage em = (EncryptedMessage) SerializationUtils
+					.deserialize(cipherManager.decrypt(message.getEncryptedMessage(), myKeyPair.getPrivate()));
+			result.setUserInConversation(em.getUsersInConversation());
+			result.setTime(message.getTime());
+			result.setFrom(message.getUserFrom());
+			result.setContent(em.getContent());
+		} catch (CryptoException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

@@ -27,7 +27,7 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 		OutputStreamHandler<ServerResponse> outputStreamHandler = serverManager.getOutputStreamForUser(senderId);
 		switch (t.getRequestType()) {
 		case GET_ALL_USERS:
-			return getAllUsers(t, outputStreamHandler);
+			return getAllUsers(t, senderId, outputStreamHandler);
 		case REGISTER:
 			return register(t, senderId, outputStreamHandler);
 		case SEND_MESSAGE:
@@ -51,7 +51,7 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 				t, outputStreamHandler) {
 			@Override
 			protected ServerResponse doTask(ServerRequest request) {
-				
+
 				Message message = (Message) request.getValue();
 				message.setUserFrom(senderId);
 				LocalDateTime dt = new org.joda.time.LocalDateTime();
@@ -63,7 +63,7 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 		return output;
 	}
 
-	private SafeCommunicatorRunnable<ServerResponse, ServerRequest> getAllUsers(ServerRequest t,
+	private SafeCommunicatorRunnable<ServerResponse, ServerRequest> getAllUsers(ServerRequest t, final Long senderId,
 			OutputStreamHandler<ServerResponse> outputStreamHandler) {
 		SafeCommunicatorRunnable<ServerResponse, ServerRequest> output = new SafeCommunicatorRunnable<ServerResponse, ServerRequest>(
 				t, outputStreamHandler) {
@@ -71,7 +71,7 @@ public class ServerEventDispatcher extends EventDispatcher<ServerResponse, Serve
 			protected ServerResponse doTask(ServerRequest request) {
 				ServerResponse response = new ServerResponse();
 				response.setResponseType(ServerResponseType.ALL_USERS);
-				UserList userList = new UserList(serverManager.getAllUsers());
+				UserList userList = new UserList(serverManager.getAllUsersWithout(senderId));
 				response.setValue(userList);
 				Logger.getLogger(this.getClass().getName()).info("GET ALL USER FOR");
 				return response;

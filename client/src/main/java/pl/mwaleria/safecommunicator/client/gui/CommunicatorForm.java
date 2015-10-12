@@ -14,7 +14,7 @@ import javax.swing.DefaultListModel;
 
 import pl.mwaleria.safecommunicator.client.ClientManager;
 import pl.mwaleria.safecommunicator.client.msg.ChatThread;
-import pl.mwaleria.safecommunicator.core.Message;
+import pl.mwaleria.safecommunicator.client.msg.DecryptedMessage;
 import pl.mwaleria.safecommunicator.core.User;
 import pl.mwaleria.safecommunicator.core.gui.PopupListener;
 
@@ -196,7 +196,16 @@ public class CommunicatorForm extends javax.swing.JFrame {
 		clientManager.sendMessage(text, array);
 	}
 
-	public void handleNewMessage(Message m) {
+	public void handleNewMessage(DecryptedMessage m) {
+		ChatThread ct = new ChatThread(m.getUserInConversation());
+		ChatPanel cp = openConversations.get(ct);
+		if (cp == null) {
+			cp = new ChatPanel(this, ct);
+			tabbedPanel.add(cp);
+			openConversations.put(ct, cp);
+		}
+
+		cp.addText("User :" + m.getFrom() + "\n" + m.getContent() + "\n");
 
 	}
 
